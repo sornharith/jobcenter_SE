@@ -1,5 +1,5 @@
 "use client";
-import Button from "../ui/Button_ui";
+import Button from "../ui/Button";
 import Input from "../ui/Input";
 import { ChangeEvent, useState, useEffect } from "react";
 import useJobStore from "@/store/useJobStore";
