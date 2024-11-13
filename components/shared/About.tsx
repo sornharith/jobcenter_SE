@@ -31,7 +31,7 @@ const About = () => {
             src={"/signature.png"}
             width={400}
             height={400}
-            alt="workify signature"
+            alt="Jobcenter signature"
           />
         </div>
       </div>

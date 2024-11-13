@@ -11,7 +11,7 @@ const raleway = Raleway({
 });
 
 export const metadata: Metadata = {
-  title: "Workify",
+  title: "JobCenter",
   description: "Job Board",
 };
 

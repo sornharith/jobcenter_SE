@@ -1,5 +1,6 @@
 import Button from "@/components/ui/Button";
 import { formatPostedDate } from "@/utils/formatDate";
+import ApplyButton from "./Applybutton";
 
 interface DynamicProps {
   params: {
@@ -25,14 +26,14 @@ const page = async ({ params }: DynamicProps) => {
   const { id } = params;
   const job = await getData(id);
   const formattedPostedDate = formatPostedDate(
-    job.createdAt
+    job?.createdAt
   );
   return (
     <>
       <div className="bg-[url('/hero.png')] h-fit relative w-full bg-cover mt-[-70px] py-28">
         <div className="flex flex-col h-full items-center justify-center pt-[82px] gap-20 w-[90%] mx-auto max-w-[1450px]">
           <h1 className="text-purple-600 font-bold text-4xl">
-            {job.name}
+            {job?.name}
           </h1>
         </div>
       </div>
@@ -51,7 +52,7 @@ const page = async ({ params }: DynamicProps) => {
                       <div>
                         <p>Employment Type:</p>
                         <span className="font-medium">
-                          {job.employmentType}
+                          {job?.employmentType}
                         </span>
                       </div>
                     </li>
@@ -67,7 +68,7 @@ const page = async ({ params }: DynamicProps) => {
                       <div>
                         <p>Location:</p>
                         <span className="font-medium">
-                          {job.location}
+                          {job?.location}
                         </span>
                       </div>
                     </li>
@@ -75,7 +76,7 @@ const page = async ({ params }: DynamicProps) => {
                       <div>
                         <p>Salary:</p>
                         <span className="font-medium">
-                          {job.salary}k/year
+                          {job?.salary}k/year
                         </span>
                       </div>
                     </li>
@@ -108,7 +109,7 @@ const page = async ({ params }: DynamicProps) => {
             </p>
 
             <div className="mt-4">
-              <Button>Apply Now</Button>
+              <ApplyButton />
             </div>
           </div>
         </div>

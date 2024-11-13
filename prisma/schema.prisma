@@ -18,3 +18,4 @@ model JobPosting {
   employmentType String?
   createdAt      DateTime @default(now())
 }
+
