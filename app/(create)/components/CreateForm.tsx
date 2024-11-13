@@ -10,9 +10,13 @@ import Input from "@/components/ui/Input";
 import { useState, useEffect } from "react";
 import { useEdgeStore } from "@/lib/edgestore";
 import clsx from "clsx";
+import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
+import { Check, XCircle } from 'lucide-react';
 
 const CreateForm = () => {
   const [file, setFile] = useState<File>();
+  const [showNotification, setShowNotification] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const { edgestore } = useEdgeStore();
 
   const {
@@ -48,8 +52,17 @@ const CreateForm = () => {
   }, [file]);
 
   const onSubmit = handleSubmit(async (data) => {
-    await createJob(data);
-    reset();
+    try {
+      await createJob(data);
+      setIsSuccess(true);
+      setShowNotification(true);
+      reset();
+    } catch (error) {
+      setIsSuccess(false);
+      setShowNotification(true);
+    } finally {
+      setTimeout(() => setShowNotification(false), 2000);
+    }
   });
 
   return (
@@ -180,6 +193,33 @@ const CreateForm = () => {
           Submit
         </Button>
       </form>
+
+      {/* Success/Error Notification */}
+      <AlertDialog open={showNotification}>
+        <AlertDialogContent className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 p-4 rounded-lg shadow-lg ${
+          isSuccess ? 'bg-green-100' : 'bg-red-100'
+        }`}>
+          <div className="flex items-center gap-3">
+            {isSuccess ? (
+              <>
+                <Check className="h-6 w-6 text-green-600" />
+                <div>
+                  <h4 className="font-semibold text-green-600">Success</h4>
+                  <p className="text-green-600">Job created successfully!</p>
+                </div>
+              </>
+            ) : (
+              <>
+                <XCircle className="h-6 w-6 text-red-600" />
+                <div>
+                  <h4 className="font-semibold text-red-600">Error</h4>
+                  <p className="text-red-600">Please fill in all required fields!</p>
+                </div>
+              </>
+            )}
+          </div>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 };
