@@ -1,5 +1,5 @@
 import Input from "../ui/Input";
-import Button from "../ui/Button";
+import Button from "../ui/Button_ui";
 
 const Contact = () => {
   return (

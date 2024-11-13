@@ -3,7 +3,7 @@
 import { useState } from "react";
 import useJobStore from "@/store/useJobStore";
 import JobCard from "./JobCard";
-import Button from "../ui/Button";
+import Button from "../ui/Button_ui";
 
 const Jobs = () => {
   const { filteredJobs } = useJobStore();
