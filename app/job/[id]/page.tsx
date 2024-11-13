@@ -10,7 +10,7 @@ interface DynamicProps {
 
 const getData = async (id: string) => {
   const res = await fetch(
-    `http://localhost:3000/api/post/${id}`,
+    `http://127.0.0.1:3000/api/post/${id}`,
     {
       cache: "no-store",
     }
