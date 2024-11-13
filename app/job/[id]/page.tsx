@@ -1,6 +1,7 @@
 import Button from "@/components/ui/Button";
 import { formatPostedDate } from "@/utils/formatDate";
 import ApplyButton from "./Applybutton";
+import { prisma } from "@/lib/prisma";
 
 interface DynamicProps {
   params: {
@@ -9,31 +10,27 @@ interface DynamicProps {
 }
 
 const getData = async (id: string) => {
-  const res = await fetch(
-    `http://127.0.0.1:3000/api/post/${id}`,
-    {
-      cache: "no-store",
-    }
-  );
-
-  if (!res.ok) {
-    throw new Error("Failed");
+  const res = await prisma.jobPosting.findUnique({
+    where: { id },
+  });
+  if (!res) {
+    throw new Error("Job not found");
   }
-
-  return res.json();
+  return res;
 };
-const page = async ({ params }: DynamicProps) => {
+
+const Page = async ({ params }: DynamicProps) => {
   const { id } = params;
   const job = await getData(id);
-  const formattedPostedDate = formatPostedDate(
-    job?.createdAt
-  );
+  
+  const formattedPostedDate = formatPostedDate(job.createdAt.toString());
+
   return (
     <>
       <div className="bg-[url('/hero.png')] h-fit relative w-full bg-cover mt-[-70px] py-28">
         <div className="flex flex-col h-full items-center justify-center pt-[82px] gap-20 w-[90%] mx-auto max-w-[1450px]">
           <h1 className="text-purple-600 font-bold text-4xl">
-            {job?.name}
+            {job?.name ?? "Job Title"}
           </h1>
         </div>
       </div>
@@ -52,7 +49,7 @@ const page = async ({ params }: DynamicProps) => {
                       <div>
                         <p>Employment Type:</p>
                         <span className="font-medium">
-                          {job?.employmentType}
+                          {job?.employmentType ?? "Not specified"}
                         </span>
                       </div>
                     </li>
@@ -60,7 +57,7 @@ const page = async ({ params }: DynamicProps) => {
                       <div>
                         <p>Company:</p>
                         <span className="font-medium">
-                          {job.author}
+                          {job?.author ?? "Not specified"}
                         </span>
                       </div>
                     </li>
@@ -68,7 +65,7 @@ const page = async ({ params }: DynamicProps) => {
                       <div>
                         <p>Location:</p>
                         <span className="font-medium">
-                          {job?.location}
+                          {job?.location ?? "Not specified"}
                         </span>
                       </div>
                     </li>
@@ -76,7 +73,7 @@ const page = async ({ params }: DynamicProps) => {
                       <div>
                         <p>Salary:</p>
                         <span className="font-medium">
-                          {job?.salary}k/year
+                          {job?.salary ? `${job.salary}k/year` : "Not specified"}
                         </span>
                       </div>
                     </li>
@@ -99,13 +96,7 @@ const page = async ({ params }: DynamicProps) => {
               Job Description:
             </h5>
             <p className="mt-4 text-slate-400">
-              {job.description}
-              {job.description}
-              {job.description}
-              {job.description}
-              {job.description}
-              {job.description}
-              {job.description}
+              {job?.description ?? "No description available."}
             </p>
 
             <div className="mt-4">
@@ -118,4 +109,4 @@ const page = async ({ params }: DynamicProps) => {
   );
 };
 
-export default page;
+export default Page;
