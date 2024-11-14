@@ -2,6 +2,7 @@ import Button from "@/components/ui/Button";
 import { formatPostedDate } from "@/utils/formatDate";
 import ApplyButton from "./Applybutton";
 import { prisma } from "@/lib/prisma";
+import BookmarkButton from "@/components/ui/BookmarkButton";
 
 interface DynamicProps {
   params: {
@@ -40,9 +41,13 @@ const Page = async ({ params }: DynamicProps) => {
           <div className="lg:col-span-4 md:col-span-6">
             <div className="shadow rounded-md bg-white sticky top-20">
               <div className="p-6">
-                <h5 className="text-lg font-semibold">
-                  Job Information
-                </h5>
+                <div className="flex items-center justify-between">
+                  <h5 className="text-lg font-semibold">
+                    Job Information
+                  </h5>
+                  <BookmarkButton />
+                </div>
+                
                 <div className="p-6 border-t border-slate-100">
                   <ul>
                     <li>

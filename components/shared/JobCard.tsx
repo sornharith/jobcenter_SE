@@ -43,7 +43,7 @@ const JobCard = ({ job }: JobsCardProps) => {
         </div>
 
         <div 
-          className="absolute bottom-3 left-3 cursor-pointer"
+          className="absolute bottom-3 right-3 cursor-pointer"
           onClick={handleBookmarkClick}
         >
           <Bookmark
