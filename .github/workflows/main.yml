@@ -1,6 +1,5 @@
 name: Auto Commit Changes
 
-# Set up a schedule to run the workflow every 30 minutes
 on:
   schedule:
     - cron: "*/30 * * * *"  # Every 30 minutes
@@ -10,24 +9,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Check out the repository
       - name: Check out repository
         uses: actions/checkout@v3
+        with:
+          persist-credentials: true
 
-      # Step 2: Configure git user
       - name: Set up git user
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-      # Step 3: Make any desired changes here
-      # Replace this step with any script or command that modifies your files.
+      - name: Ensure clean state
+        run: git reset --hard
+
       - name: Make changes
         run: |
-          # Example: append the date and time to a log file
           echo "Automated commit at $(date)" >> auto_commit_log.txt
 
-      # Step 4: Check if there are any changes and commit if there are
       - name: Commit changes
         run: |
           git add .
@@ -37,9 +35,8 @@ jobs:
             echo "No changes to commit"
           fi
 
-      # Step 5: Push the changes
       - name: Push changes
-        run: git push
         env:
-          # GITHUB_TOKEN is automatically provided in GitHub Actions for authentication
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git push "https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git" HEAD:${{ github.ref_name }}
